@@ -11,8 +11,8 @@ get_param_fun <- function(params_dt, param_name) {
             
             
             simulation_year <- SimulationYear  # Year from slider
-            forecast_horizon <- seq(base_year, end_year)
-            scenario_years<-forecast_horizon
+            forecast_horizon_pit <- seq(base_year, end_year)
+            scenario_years<-forecast_horizon_pit
             
             # Define the scenarios
             scenarios <- c("t0", "t1", "t2", "t3", "t4","t5")
@@ -476,7 +476,7 @@ tax_calc_fun <- function(dt_scn, params_dt) {
       
       
       merged_PIT_BU_SIM <- merge(summary_BU, summary_SIM, by = "scenarios", all = TRUE)
-      merged_PIT_BU_SIM$year <- as.character(forecast_horizon)
+      merged_PIT_BU_SIM$year <- as.character(forecast_horizon_pit)
       merged_PIT_BU_SIM <- merged_PIT_BU_SIM[, c("year", names(merged_PIT_BU_SIM)[-length(merged_PIT_BU_SIM)])]
       
       numeric_columns <- sapply(merged_PIT_BU_SIM, is.numeric)

@@ -2,10 +2,10 @@
 
 # I.Function for Dashboard ------------------------------------------------------------------
 
-Tax_Expenditures_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,decile_pit_summary, forecast_horizon) {
-  # Check if forecast_horizon is provided and is valid
-  if (missing(forecast_horizon) || length(forecast_horizon) != 2) {
-    stop("Please provide a valid 'forecast_horizon' with minimum and maximum values.")
+Tax_Expenditures_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,decile_pit_summary, forecast_horizon_pit) {
+  # Check if forecast_horizon_pit is provided and is valid
+  if (missing(forecast_horizon_pit) || length(forecast_horizon_pit) != 2) {
+    stop("Please provide a valid 'forecast_horizon_pit' with minimum and maximum values.")
   }
   # Chart 1. Total Tax Expenditures -----------------------------------------------------------------
        
@@ -22,7 +22,7 @@ Tax_Expenditures_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,
                                 line = list(width = 4, dash = "solid")
                               ) %>%
                                 layout(
-                                  title = paste("Total Tax Expenditures,", min(forecast_horizon), "-", max(forecast_horizon)),
+                                  title = paste("Total Tax Expenditures,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
                                   xaxis = list(title = '', tickformat = 'd'),
                                   yaxis = list(title = ' ', rangemode = 'tozero'),
                                   annotations = list(
@@ -55,7 +55,7 @@ Tax_Expenditures_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,
           ) %>%
             layout(#title = "Tax Expenditures by Type of Income",
                    
-                   title = paste("Tax Expenditures by Type of Income,", min(forecast_horizon), "-", max(forecast_horizon)),
+                   title = paste("Tax Expenditures by Type of Income,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
                    
                    xaxis = list(title = " "),
                    yaxis = list(title = " "),
@@ -96,7 +96,7 @@ Tax_Expenditures_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,
                                    type = 'bar', 
                                    barmode = 'group') %>%
               layout(#title = "Tax Expenditures by NACE Section",
-                     title = paste("Tax Expenditures by NACE Section,", min(forecast_horizon), "-", max(forecast_horizon)),
+                     title = paste("Tax Expenditures by NACE Section,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
                      xaxis = list(title = "NACE Section"),
                      yaxis = list(title = " "),
                      annotations = list(
@@ -133,7 +133,7 @@ Tax_Expenditures_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,
                                           type = 'bar', 
                                           barmode = 'group') %>%
             layout(#title = "Tax Expenditures by Decile Groups",
-                   title = paste("Tax Expenditures by Decile Groups,", min(forecast_horizon), "-", max(forecast_horizon)),
+                   title = paste("Tax Expenditures by Decile Groups,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
                    
                    xaxis = list(title = "Decile", tickmode = 'linear'), # Show all values on the x-axis
                    yaxis = list(title = " "),

@@ -1,4 +1,4 @@
-suppressMessages({
+#suppressMessages({
           
   # II. SIMULATION ----
             # 1.1 Pre-processing COICOP and setting parameters for simulation ------------------------------------------
@@ -468,7 +468,13 @@ suppressMessages({
             colnames(Results_EST_CAL_FACTOR$VAT_Gap) <- "Benchmark_VAT_LCU"
             
             Uncalibrated_VAT<- sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Est_Rev$Final_Demand_Total, na.rm = T)
-            VAT_control<-sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Exports_FOB, na.rm = T)
+            #VAT_control<-sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Exports_FOB, na.rm = T)
+            # NEW  6/11/2025
+            
+            VAT_control<-sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Total_use_at_basic_prices,na.rm = T)
+            
+            #
+            
             
             Locked_Calibration_Factor_TEST<-VAT_control/Uncalibrated_VAT
             
@@ -476,8 +482,12 @@ suppressMessages({
             
             #View(Locked_Calibration_Factor_TEST)
             Results_EST_CAL_FACTOR$VAT_Gap$Calibrated_VAT_Est.LCU <- sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Est_Rev$Final_Demand_Total, na.rm = T)*Locked_Calibration_Factor_BU
-            Results_EST_CAL_FACTOR$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Exports_FOB, na.rm = T)
-            Results_EST_CAL_FACTOR$VAT_Gap$Total_VAT_Gap.LCU <- Results_EST_CAL_FACTOR$VAT_Gap$Benchmark_VAT_LCU - Results_EST_CAL_FACTOR$VAT_Gap$VAT_Control_Total.LCU
+            #Results_EST_CAL_FACTOR$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Exports_FOB, na.rm = T)
+            # NEW  6/11/2025
+            Results_EST_CAL_FACTOR$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_EST_CAL_FACTOR_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T)
+           
+            
+             Results_EST_CAL_FACTOR$VAT_Gap$Total_VAT_Gap.LCU <- Results_EST_CAL_FACTOR$VAT_Gap$Benchmark_VAT_LCU - Results_EST_CAL_FACTOR$VAT_Gap$VAT_Control_Total.LCU
             Results_EST_CAL_FACTOR$VAT_Gap$Total_VAT_Gap.Prc <- Results_EST_CAL_FACTOR$VAT_Gap$Total_VAT_Gap.LCU/Results_EST_CAL_FACTOR$VAT_Gap$VAT_Control_Total.LCU
             
             
@@ -495,7 +505,13 @@ suppressMessages({
             
             
             Results$VAT_Gap$Calibrated_VAT_Est.LCU <- sum(CPA_PRODUCTS_BU$Est_Rev$Final_Demand_Total, na.rm = T)*Locked_Calibration_Factor_BU
-            Results$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_BU$Use_VAT$Exports_FOB, na.rm = T)
+            #Results$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_BU$Use_VAT$Exports_FOB, na.rm = T)
+            
+            # New 6/11/2025
+            Results$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_BU$Use_VAT$Total_use_at_basic_prices, na.rm = T) #- sum(CPA_PRODUCTS_BU$Use_VAT$Exports_FOB, na.rm = T)
+            
+            
+            
             Results$VAT_Gap$Total_VAT_Gap.LCU <- Results$VAT_Gap$Benchmark_VAT_LCU - Results$VAT_Gap$VAT_Control_Total.LCU
             Results$VAT_Gap$Total_VAT_Gap.Prc <- Results$VAT_Gap$Total_VAT_Gap.LCU/Results$VAT_Gap$VAT_Control_Total.LCU
             
@@ -523,7 +539,12 @@ suppressMessages({
             
             Results_EST_TE$VAT_Gap$Uncalibrated_VAT_Est.LCU <- sum(CPA_PRODUCTS_EST_TE$Est_Rev$Final_Demand_Total, na.rm = T)
             Results_EST_TE$VAT_Gap$Calibrated_VAT_Est.LCU <- sum(CPA_PRODUCTS_EST_TE$Est_Rev$Final_Demand_Total, na.rm = T)*Locked_Calibration_Factor_BU
-            Results_EST_TE$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_EST_TE$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_EST_TE$Use_VAT$Exports_FOB, na.rm = T)
+            
+            #Results_EST_TE$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_EST_TE$Use_VAT$Total_use_at_basic_prices, na.rm = T) - sum(CPA_PRODUCTS_EST_TE$Use_VAT$Exports_FOB, na.rm = T)
+            # NEW 6/11/2025
+            Results_EST_TE$VAT_Gap$VAT_Control_Total.LCU <- sum(CPA_PRODUCTS_EST_TE$Use_VAT$Total_use_at_basic_prices, na.rm = T) #- sum(CPA_PRODUCTS_EST_TE$Use_VAT$Exports_FOB, na.rm = T)
+            
+            
             Results_EST_TE$VAT_Gap$Total_VAT_Gap.LCU <- Results_EST_TE$VAT_Gap$Benchmark_VAT_LCU - Results_EST_TE$VAT_Gap$VAT_Control_Total.LCU
             Results_EST_TE$VAT_Gap$Total_VAT_Gap.Prc <- Results_EST_TE$VAT_Gap$Total_VAT_Gap.LCU/Results_EST_TE$VAT_Gap$VAT_Control_Total.LCU
             
@@ -659,7 +680,7 @@ suppressMessages({
                                   ))%>%
                                   data.table()
                                 
-})                                  
+#})                                  
                                 
            
             

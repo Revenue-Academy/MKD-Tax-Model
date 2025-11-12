@@ -1,7 +1,7 @@
 
 start.time <- proc.time()
 
-suppressMessages({
+#suppressMessages({
   
   
   CPA_TAXABLE_PROPORTIONS_BU <- CPA_TAXABLE_PROPORTIONS_BU %>%
@@ -611,5 +611,5 @@ suppressMessages({
           dplyr::group_by(INDUSTRY_CODE, INDUSTRY_NAME) %>%
           dplyr::summarise(Total_output_by_industries_at_basic_prices = sum(value, na.rm = T))
       
-})     
+#})     
       print("Script Data Transformation Done !")

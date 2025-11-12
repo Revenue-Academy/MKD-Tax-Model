@@ -25,6 +25,7 @@ library(RColorBrewer)
 library(Hmisc)
 library(openxlsx)
 
+SimulationYear<-2021
 
 options(scipen = 999)
 
@@ -398,11 +399,11 @@ server <- function(input, output, session) {
       # source("Scripts/PIT/Calc-Distribution-Effects.R")
       # source("Scripts/PIT/Calc-Redistribution-Effects.R")
       
-      source(paste0(path1, "/Scripts/PIT/TaxCalculator.R"))
+      source(paste0(path1, "/Scripts/PIT/TaxCalculator2.R"))
       source(paste0(path1, "/Scripts/PIT/Calc-Structure.R"))
       source(paste0(path1, "/Scripts/PIT/Calc-TaxExpenditures.R"))
       source(paste0(path1, "/Scripts/PIT/Calc-Distribution-Effects.R"))
-      source(paste0(path1, "/Scripts/PIT/Calc-Distribution-Effects.R"))
+      #source(paste0(path1, "/Scripts/PIT/Calc-Distribution-Effects.R"))
       source(paste0(path1, "/Scripts/PIT/Calc-Redistribution-Effects.R"))
       
       list(
@@ -439,7 +440,7 @@ server <- function(input, output, session) {
     req(reactive_simulation_results())
     datatable(
       reactive_simulation_results()$pit_summary_df,
-      caption = tags$caption(paste("PIT Projections,", min(forecast_horizon), "-", max(forecast_horizon)), class = "table-caption-bold"),
+      caption = tags$caption(paste("PIT Projections,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)), class = "table-caption-bold"),
       extensions = 'Buttons',
       options = list(
         pageLength = 15,
@@ -501,7 +502,7 @@ server <- function(input, output, session) {
     datatable(
       te_summary_selected,
       caption = tags$caption(
-        paste("Tax Expenditures in LCU MIL,", min(forecast_horizon), "-", max(forecast_horizon)),
+        paste("Tax Expenditures in LCU MIL,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
         class = "table-caption-bold"
       ),
       options = list(
@@ -721,16 +722,16 @@ server <- function(input, output, session) {
     chart_type <- isolate(input$chartSelectPIT_Revenues)
     cat("Selected chart type:", chart_type, "\n")
     
-    if (exists("merged_PIT_BU_SIM", envir = .GlobalEnv) && exists("forecast_horizon", envir = .GlobalEnv)) {
+    if (exists("merged_PIT_BU_SIM", envir = .GlobalEnv) && exists("forecast_horizon_pit", envir = .GlobalEnv)) {
       merged_PIT_BU_SIM <- get("merged_PIT_BU_SIM", envir = .GlobalEnv)
-      forecast_horizon <- get("forecast_horizon", envir = .GlobalEnv)
+      forecast_horizon_pit <- get("forecast_horizon_pit", envir = .GlobalEnv)
       
       if (chart_type == "Revenue_Charts") {
         cat("Preparing Revenue_Charts charts\n")
         #source("Scripts/PIT/Charts-PIT_Revenues.R")
         source(paste0(path1, "/Scripts/PIT/Charts-PIT_Revenues.R"))
         
-        charts <- Revenue_Charts(merged_PIT_BU_SIM, range(forecast_horizon))
+        charts <- Revenue_Charts(merged_PIT_BU_SIM, range(forecast_horizon_pit))
 
 
         output$infoBox1 <- renderInfoBox({
@@ -901,7 +902,7 @@ server <- function(input, output, session) {
         cat("Preparing Tax_Expenditures_Charts charts\n")
         #source("Scripts/PIT/Charts-TaxExpenditures.R")
         source(paste0(path1, "/Scripts/PIT/Charts-TaxExpenditures.R"))
-        charts_te <- Tax_Expenditures_Charts(te_agg, te_labor_capital, nace_pit_summary_te, decile_pit_summary, range(forecast_horizon))
+        charts_te <- Tax_Expenditures_Charts(te_agg, te_labor_capital, nace_pit_summary_te, decile_pit_summary, range(forecast_horizon_pit))
         
         # Conditionally render infoBox1
         output$infoBox1 <- renderInfoBox({
@@ -968,7 +969,7 @@ server <- function(input, output, session) {
       }
       
     } else {
-      cat("Error: merged_PIT_BU_SIM or forecast_horizon not found in the global environment\n")
+      cat("Error: merged_PIT_BU_SIM or forecast_horizon_pit not found in the global environment\n")
     }
   }
   

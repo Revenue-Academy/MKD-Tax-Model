@@ -245,7 +245,7 @@ VAT_sectors_revenues_fun <- function(forecast_combined_cpa_selected,
   vat_nace_gov_plt <- plot_ly(forecast_combined_cpa_selected) %>%
     add_trace(
       x = ~PRODUCT_INDUSTRY_CODE, 
-      y = ~Households_VAT, 
+      y = ~Goverment_VAT, 
       type = 'bar', 
       name = ~scenario, # Use the Scenario column to label traces
       text = "", # Do not display text inside bars

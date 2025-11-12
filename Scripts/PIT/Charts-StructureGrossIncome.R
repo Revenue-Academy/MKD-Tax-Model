@@ -6,7 +6,7 @@
 
 # I.Function for Dashboard ------------------------------------------------------------------
 
-Structure_GrossIncome_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,decile_pit_summary, forecast_horizon) {
+Structure_GrossIncome_Charts <- function(te_agg,te_labor_capital,nace_pit_summary_te,decile_pit_summary, forecast_horizon_pit) {
 
 # I.Chart labor-capital -------------------------------------------------------------------------
 

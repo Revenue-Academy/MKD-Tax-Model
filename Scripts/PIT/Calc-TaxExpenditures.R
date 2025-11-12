@@ -116,8 +116,8 @@
       result_sim <- combined_data_sim[, .(total_calc_pitax_sim = sum(pitax)), by = .(scenario, nace_section)]
       
       # Add year column to both results
-      result_bu[, year := forecast_horizon[match(scenario, scenarios)]]
-      result_sim[, year := forecast_horizon[match(scenario, scenarios)]]
+      result_bu[, year := forecast_horizon_pit[match(scenario, scenarios)]]
+      result_sim[, year := forecast_horizon_pit[match(scenario, scenarios)]]
       
       # Combine both results into one data frame
       nace_pit_summary <- merge(result_bu, result_sim, by = c("scenario", "year","nace_section"), all = TRUE)
@@ -166,8 +166,8 @@
       result_sim <- combined_data_sim[, .(total_calc_pitax_sim = sum(pitax)), by = .(scenario, decile_group)]
       
       # Add year column to both results
-      result_bu[, year := forecast_horizon[match(scenario, scenarios)]]
-      result_sim[, year := forecast_horizon[match(scenario, scenarios)]]
+      result_bu[, year := forecast_horizon_pit[match(scenario, scenarios)]]
+      result_sim[, year := forecast_horizon_pit[match(scenario, scenarios)]]
       
       # Combine both results into one data frame
       decile_pit_summary <- merge(result_bu, result_sim, by = c("scenario", "year","decile_group"), all = TRUE)

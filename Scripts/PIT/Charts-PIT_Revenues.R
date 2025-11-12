@@ -1,6 +1,6 @@
 library(plotly)
 
-Revenue_Charts <- function(merged_PIT_BU_SIM, forecast_horizon) {
+Revenue_Charts <- function(merged_PIT_BU_SIM, forecast_horizon_pit) {
   
   # Chart 1. Comparison of PIT Revenues -----------------------------------------------------------------
   PIT_RevenuesTotal_plt <- plot_ly(
@@ -19,7 +19,7 @@ Revenue_Charts <- function(merged_PIT_BU_SIM, forecast_horizon) {
                                           line = list(width = 4, dash = "dot")
                                       ) %>%
                               layout(
-                                title = paste("Total PIT Revenues,", min(forecast_horizon), "-", max(forecast_horizon)),
+                                title = paste("Total PIT Revenues,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
                                               xaxis = list(title = '', tickformat = 'd'),
                                               yaxis = list(title = ' ', rangemode = 'tozero'),
                                               annotations = list(
@@ -53,7 +53,7 @@ Revenue_Charts <- function(merged_PIT_BU_SIM, forecast_horizon) {
                                       line = list(width = 4, dash = "dot")
                                     ) %>%
                                     layout(
-                                      title = paste("PIT Revenues Capital,", min(forecast_horizon), "-", max(forecast_horizon)),
+                                      title = paste("PIT Revenues Capital,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
                                       xaxis = list(title = '', tickformat = 'd'),
                                       yaxis = list(title = ' ', rangemode = 'tozero'),
                                       annotations = list(
@@ -85,7 +85,7 @@ Revenue_Charts <- function(merged_PIT_BU_SIM, forecast_horizon) {
       line = list(width = 4, dash = "dot")
     ) %>%
     layout(
-      title = paste("PIT Revenues Labor,", min(forecast_horizon), "-", max(forecast_horizon)),
+      title = paste("PIT Revenues Labor,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
       xaxis = list(title = '', tickformat = 'd'),
       yaxis = list(title = ' ', rangemode = 'tozero'),
       annotations = list(
@@ -121,7 +121,7 @@ Revenue_Charts <- function(merged_PIT_BU_SIM, forecast_horizon) {
   #     line = list(width = 4, dash = "dot")
   #   ) %>%
   #   layout(
-  #     title = paste("PIT Revenues Wages,", min(forecast_horizon), "-", max(forecast_horizon)),
+  #     title = paste("PIT Revenues Wages,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
   #     xaxis = list(title = '', tickformat = 'd'),
   #     yaxis = list(title = ' ', rangemode = 'tozero'),
   #     annotations = list(
@@ -173,7 +173,7 @@ Revenue_Charts <- function(merged_PIT_BU_SIM, forecast_horizon) {
                                    insidetextfont = list(color = 'white')  # Ensure text is readable inside bars
   ) %>%
     layout(
-      title = paste("Structure of PIT revenues by Type of Income,", min(forecast_horizon), "-", max(forecast_horizon)),
+      title = paste("Structure of PIT revenues by Type of Income,", min(forecast_horizon_pit), "-", max(forecast_horizon_pit)),
       xaxis = list(title = " "),
       yaxis = list(title = " "),
       barmode = 'stack',

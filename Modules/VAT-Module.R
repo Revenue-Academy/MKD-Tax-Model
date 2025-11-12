@@ -79,12 +79,13 @@ ui <- dashboardPage(
               fluidRow(
                 column(3,
                        sliderInput("SimulationYear", "Setting Simulation Year",
-                                   min = 2020, max = 2030, step = 1, value = 2020, width = "100%", round = 0, sep = ""), 
+                                   min = 2022, max = 2030, step = 1, value = 2022, width = "100%", round = 0, sep = ""), 
                        sliderInput("benchmark_tax_rate", "VAT Benchmark Rate",
                                    min = 0, max = 1, step = 0.01, value = 0.18, width = "100%", round = 3, sep = ""), 
                        uiOutput("productIndustryNameSelect_SIM"),
                        uiOutput("productIndustryCodeSelect_SIM"),
                        actionButton("addVATRateValue_CPA_SIM", "Add to Table", style = "float: left;"),
+                       actionButton("removeLastVATRateValue_CPA_SIM", "Remove last row", style = "float: left; margin-left: 10px;"),
                        actionButton("clearVATRateTable_CPA_SIM", "Clear Table", style = "float: left;")
                 ),
                 column(3,
@@ -214,6 +215,16 @@ mainServer <- function(input, output, session) {
   
   # OD OVDE 
   
+  observeEvent(input$removeLastVATRateValue_CPA_SIM, {
+    dt <- VAT_Rate_Values_CPA_SIM()
+    if (!is.null(dt) && nrow(dt) > 0) {
+      # if dt is a data.table, .N works; otherwise use nrow(dt)
+      VAT_Rate_Values_CPA_SIM(dt[-.N])  # removes the last row
+    }
+  })
+  
+  
+  
   observeEvent(input$calc_Sim_Button, {
     # 1) Show "Running..." modal
     showModal(modalDialog(
@@ -229,17 +240,9 @@ mainServer <- function(input, output, session) {
       source(paste0(path1, "/Scripts/VAT/VAT-DataTransformation.R"))
       source(paste0(path1, "/Scripts/VAT/TaxCalculator_BU.R"))
       source(paste0(path1, "/Scripts/VAT/TaxCalculator_SIM.R"))
-      #source(paste0(path1, "/Scripts/VAT/Effective_VAT_rates-Module_1.R"))
       source(paste0(path1, "/Scripts/VAT/Forecast-VAT.R"))
       source(paste0(path1, "/Scripts/VAT/ChartsPreparation-VAT.R"))
-      
-      #source("Scripts/VAT/VAT-DataTransformation.R")
-      #source("Scripts/VAT/TaxCalculator_BU.R")
-      #source("Scripts/VAT/TaxCalculator_SIM.R")
-      #source("Scripts/VAT/Effective_VAT_rates-Module_1.R")
-      #source("Scripts/VAT/Forecast-VAT.R")
-      #source("Scripts/VAT/ChartsPreparation-VAT.R")
-      
+
       # Return whatever objects you need
       list(
         forecast_combined_agg_tbl_wide = get("forecast_combined_agg_tbl_wide", envir = .GlobalEnv),
@@ -311,14 +314,9 @@ mainServer <- function(input, output, session) {
                              value = ifelse(is.na(selected_row$Current_Policy_Reduced_Rate),
                                             0, selected_row$Current_Policy_Reduced_Rate))
           
-          # Option 1: always 0
+  
           updateNumericInput(session, "ProportionPreferentialRate2_CPA_SIM",
                              value = 0)
-          
-          # Option 2 (alternative): if you prefer the same as Current_Policy_Reduced_Rate:
-          # updateNumericInput(session, "ProportionPreferentialRate2_CPA_SIM",
-          #   value = ifelse(is.na(selected_row$Current_Policy_Reduced_Rate),
-          #                  0, selected_row$Current_Policy_Reduced_Rate))
           
           updateNumericInput(session, "ProportionStandardRate_CPA_SIM",
                              value = ifelse(is.na(selected_row$Current_Policy_Fully_Taxable),
@@ -552,12 +550,10 @@ mainServer <- function(input, output, session) {
       return()
     }
     
-    # Typically, you start from base data for the SIM
+    
     CPA_TAXABLE_PROPORTIONS_SIM <- get("CPA_TAXABLE_PROPORTIONS_BU", envir = .GlobalEnv)
     
-    # --------------------------------------------------------------------------
-    # 2) Retrieve user-updated rows (including proportions) from the reactive
-    # --------------------------------------------------------------------------
+ 
     vatRateData_CPA_SIM <- VAT_Rate_Values_CPA_SIM()  # e.g. reactiveVal
     
     # If no rows, copy base to SIM
@@ -571,9 +567,7 @@ mainServer <- function(input, output, session) {
       return()
     }
     
-    # --------------------------------------------------------------------------
-    # 3) Merge user changes (both RATES and PROPORTIONS) into the SIM dataset
-    # --------------------------------------------------------------------------
+    
     for (i in seq_len(nrow(vatRateData_CPA_SIM))) {
       row_data <- vatRateData_CPA_SIM[i, ]
       
@@ -603,9 +597,7 @@ mainServer <- function(input, output, session) {
       easyClose = TRUE
     ))
     
-    # --------------------------------------------------------------------------
-    # 4) DO NOT reset the UI. Let the user see the changed values they just saved.
-    # --------------------------------------------------------------------------
+
   })
  
   # TEST NEW
@@ -677,12 +669,9 @@ mainServer <- function(input, output, session) {
                          )
       )
       
-      #
-      # 2) Proportion Inputs
-      #
-      # If you actually want these from ProportionExempted, etc., just swap the columns below.
-      # This example uses the Current_Policy_* columns to mimic your screenshot behavior.
       
+      # 2) Proportion Inputs
+
       updateNumericInput(session, "ProportionExempted_CPA_SIM",
                          value = ifelse(
                            is.na(selected_row$Current_Policy_Exempt),
@@ -714,14 +703,7 @@ mainServer <- function(input, output, session) {
     }
   })
   
-  
-  # do ovde
-  
-  
-  
-  
-  
-  
+
   output$vatRateTableUpdate_CPA_SIM <- renderDT({
     # Select only the columns to display in the GUI
     table_to_display <- VAT_Rate_Values_CPA_SIM()[, .(

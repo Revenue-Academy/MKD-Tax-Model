@@ -23,7 +23,7 @@
                         combined_dt <- rbindlist(extracted_dist_tables_bu)
                         
                         
-                        combined_dt[, year := forecast_horizon[match(scenario, scenarios)]]
+                        combined_dt[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         
                         combined_dt<-combined_dt%>%
                           filter(year==simulation_year)
@@ -40,7 +40,7 @@
       
                         # Calculate ETR
                         pit_centile_distribution_bu[, etr := sum_calc_pitax / sum_total_gross_income]
-                        pit_centile_distribution_bu[, year := forecast_horizon[match(scenario, scenarios)]]
+                        pit_centile_distribution_bu[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         setorder(pit_centile_distribution_bu, centile_group)
                   
                         
@@ -48,7 +48,7 @@
                         extracted_dist_tables_sim <- mapply(extract_centile_rev_fun, PIT_SIM_list, scenarios, SIMPLIFY = FALSE)
                         combined_dt <- rbindlist(extracted_dist_tables_sim)
                        
-                        combined_dt[, year := forecast_horizon[match(scenario, scenarios)]]
+                        combined_dt[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         combined_dt<-combined_dt%>%
                           filter(year==simulation_year)
                         
@@ -63,7 +63,7 @@
       
                         # Calculate ETR
                         pit_centile_distribution_sim[, etr := sum_calc_pitax / sum_total_gross_income]
-                        pit_centile_distribution_sim[, year := forecast_horizon[match(scenario, scenarios)]]
+                        pit_centile_distribution_sim[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         setorder(pit_centile_distribution_sim, centile_group)
                         
                      
@@ -85,7 +85,7 @@
                        extracted_dist_tables_bu <- mapply(extract_dec_rev_fun, PIT_BU_list, scenarios, SIMPLIFY = FALSE)
                         combined_dt <- rbindlist(extracted_dist_tables_bu)
                        
-                        combined_dt[, year := forecast_horizon[match(scenario, scenarios)]]
+                        combined_dt[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         
                         combined_dt<-combined_dt%>%
                           filter(year==simulation_year)
@@ -98,7 +98,7 @@
                         ), by = .(scenario, decile_group)]
                         
                      
-                        pit_decile_distribution_bu[, year := forecast_horizon[match(scenario, scenarios)]]
+                        pit_decile_distribution_bu[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         
                         
                         setorder(pit_decile_distribution_bu, decile_group )
@@ -107,7 +107,7 @@
                         extracted_dist_tables_sim <- mapply(extract_dec_rev_fun, PIT_SIM_list, scenarios, SIMPLIFY = FALSE)
                         combined_dt <- rbindlist(extracted_dist_tables_sim)
                       
-                        combined_dt[, year := forecast_horizon[match(scenario, scenarios)]]
+                        combined_dt[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         
                         combined_dt<-combined_dt%>%
                           filter(year==simulation_year)
@@ -126,7 +126,7 @@
                         # Calculate ETR
                         #pit_decile_distribution_sim[, etr := sum_calc_pitax / sum_total_gross_income]
                         
-                        pit_decile_distribution_sim[, year := forecast_horizon[match(scenario, scenarios)]]
+                        pit_decile_distribution_sim[, year := forecast_horizon_pit[match(scenario, scenarios)]]
                         
                         
                         setorder(pit_decile_distribution_sim, decile_group )
@@ -214,8 +214,8 @@
 #                       # Combine the results with the "ALL" category
 #                       pit_result_bins_bu <- rbind(pit_result_bins, all_scenarios, fill = TRUE)
 #                       
-#                       # Add the year column using the forecast_horizon vector
-#                       pit_result_bins_bu[, year := forecast_horizon[match(scenario, scenarios)]]
+#                       # Add the year column using the forecast_horizon_pit vector
+#                       pit_result_bins_bu[, year := forecast_horizon_pit[match(scenario, scenarios)]]
 #                       
 #           
 #     # Chart -------------------------------------------------------------------
@@ -250,8 +250,8 @@
 #                       # Combine the results with the "ALL" category
 #                       pit_result_bins_sim <- rbind(pit_result_bins, all_scenarios, fill = TRUE)
 #                       
-#                       # Add the year column using the forecast_horizon vector
-#                       pit_result_bins_sim[, year := forecast_horizon[match(scenario, scenarios)]]
+#                       # Add the year column using the forecast_horizon_pit vector
+#                       pit_result_bins_sim[, year := forecast_horizon_pit[match(scenario, scenarios)]]
 #                       
 #         
 #     
@@ -308,8 +308,8 @@
             # Combine the results with the "ALL" category
             pit_result_bins_bu <- rbind(pit_result_bins, all_scenarios, fill = TRUE)
             
-            # Add the year column using the forecast_horizon vector
-            pit_result_bins_bu[, year := forecast_horizon[match(scenario, scenarios)]]
+            # Add the year column using the forecast_horizon_pit vector
+            pit_result_bins_bu[, year := forecast_horizon_pit[match(scenario, scenarios)]]
             
             
             # Chart -------------------------------------------------------------------
@@ -344,8 +344,8 @@
             # Combine the results with the "ALL" category
             pit_result_bins_sim <- rbind(pit_result_bins, all_scenarios, fill = TRUE)
             
-            # Add the year column using the forecast_horizon vector
-            pit_result_bins_sim[, year := forecast_horizon[match(scenario, scenarios)]]
+            # Add the year column using the forecast_horizon_pit vector
+            pit_result_bins_sim[, year := forecast_horizon_pit[match(scenario, scenarios)]]
             
             
             
@@ -374,7 +374,7 @@
     # Removing of objects        
             
     #rm(PIT_BU_list,PIT_SIM_list,selected_gross_desc_tbl,selected_gross_nace_tbl)
-    gc(TRUE)
+   # gc(TRUE)
            
             
     

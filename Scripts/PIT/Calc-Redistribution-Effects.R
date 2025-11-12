@@ -1,14 +1,14 @@
 'Re-Distribution tables'
 # # 1. Functions for calculation -----------------------------------------------
-extract_filtered_re_df_fun <- function(PIT_BU_list, forecast_horizon, simulation_year,
+extract_filtered_re_df_fun <- function(PIT_BU_list, forecast_horizon_pit, simulation_year,
                                        filter_positive = FALSE) {
   # Validate simulation_year: check if it is in the forecast horizon vector.
-  if (!simulation_year %in% forecast_horizon) {
+  if (!simulation_year %in% forecast_horizon_pit) {
     stop("The specified simulation year is not in the forecast horizons.")
   }
   
   # Find the index of the dataset that corresponds to simulation_year.
-  index <- which(forecast_horizon == simulation_year)
+  index <- which(forecast_horizon_pit == simulation_year)
   
   # Extract the specific data.table for the simulation year.
   PIT_BU_simulation_year_df <- PIT_BU_list[[index]]
@@ -16,7 +16,7 @@ extract_filtered_re_df_fun <- function(PIT_BU_list, forecast_horizon, simulation
   # Define the columns to keep.
   columns_to_keep <- c("id_n",
                        "g_total_gross",
-                       "total_taxbase",
+                       #"total_taxbase",
                        "total_net",
                        "pitax")
   
@@ -52,7 +52,7 @@ extract_filtered_re_df_fun <- function(PIT_BU_list, forecast_horizon, simulation
 
       # 1.BU ----------------------------------------------------------------------
 
-        PIT_BU_simulation_year_df <- extract_filtered_re_df_fun(PIT_BU_list, forecast_horizon, simulation_year)
+        PIT_BU_simulation_year_df <- extract_filtered_re_df_fun(PIT_BU_list, forecast_horizon_pit, simulation_year)
         
         PIT_BU_simulation_year_df<-PIT_BU_simulation_year_df%>%
           filter(pitax>0)
@@ -136,7 +136,7 @@ extract_filtered_re_df_fun <- function(PIT_BU_list, forecast_horizon, simulation
       # 2.SIM -------------------------------------------------------------------
       
       
-      PIT_SIM_simulation_year_df <- extract_filtered_re_df_fun(PIT_SIM_list, forecast_horizon, simulation_year)
+      PIT_SIM_simulation_year_df <- extract_filtered_re_df_fun(PIT_SIM_list, forecast_horizon_pit, simulation_year)
       
       
       PIT_SIM_simulation_year_df<-PIT_SIM_simulation_year_df%>%
@@ -248,10 +248,10 @@ extract_filtered_re_df_fun <- function(PIT_BU_list, forecast_horizon, simulation
       
       
 
-      rm(PIT_BU_list,PIT_SIM_list,extracted_dist_tables_bu,extracted_dist_tables_sim,extracted_dist_tables_bu,
+      rm(PIT_SIM_list,extracted_dist_tables_bu,extracted_dist_tables_sim,extracted_dist_tables_bu,
          extracted_tables_bu,extracted_tables_sim
          )
       
-      gc(TRUE)
+      #gc(TRUE)
       
       

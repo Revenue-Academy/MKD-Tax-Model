@@ -375,7 +375,7 @@ forecast_horizon <- seq(base_year_VAT, end_year)
                                          dplyr::mutate(across(-year, ~ round(., 1)))
                 
                 
-                forecast_combined_agg_tbl_wide<-left_join(forecast_combined_agg_tbl_wide_raw,MACRO_FISCAL_INDICATORS,by=c("year"="Year"))
+                forecast_combined_agg_tbl_wide<-left_join(forecast_combined_agg_tbl_wide_raw,macro_fiscal_indicators_vat,by=c("year"="Year"))
                 
               
                 forecast_combined_agg_tbl_wide<-forecast_combined_agg_tbl_wide%>%
@@ -392,13 +392,14 @@ forecast_horizon <- seq(base_year_VAT, end_year)
                           dplyr::filter(scenario=="Simulation")
                 
 
-                forecast_TE_tbl<-left_join(forecast_TE_raw,MACRO_FISCAL_INDICATORS,by=c("year"="Year"))%>%
+                forecast_TE_tbl<-left_join(forecast_TE_raw,macro_fiscal_indicators_vat,by=c("year"="Year"))%>%
                             dplyr::mutate('Tax Expenditures (Pct of GDP)'=round((value/Nominal_GDP)*100,2)
                                           )%>%
                             dplyr::select(-c(Nominal_GDP,Nominal_VAT_NET,Descriptions,scenario))%>%
                             dplyr::rename("Tax Expenditures (Million LCU)"="value")%>%
                             dplyr::mutate('Tax Expenditures (Million LCU)'=round(`Tax Expenditures (Million LCU)`,1))%>%
-                            dplyr::filter(year==2020)
+                            #dplyr::filter(year==2020)
+                            dplyr::filter(year==base_year_VAT)
                             data.table()
                 
                 
