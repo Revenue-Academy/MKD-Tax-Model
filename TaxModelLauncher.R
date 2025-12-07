@@ -17,7 +17,7 @@ ui <- dashboardPage(
       
       # Right side: your text
       tags$span(
-        "MKD-TAX-MODEL",
+        #"MKD-TAX-MODEL",
         style = "white-space: nowrap; font-size: 18px; margin-right: 20px;"
       )
     )
